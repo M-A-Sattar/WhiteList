@@ -18,6 +18,10 @@ contract Whitelist {
     }
 
     function addAddressToWhitelist() public {
-        
+        //msg.sender is the address of the user who called this function
+
+        require(!whitelistedAddresses[msg.sender], "Sender already in the whitelist");
+        require(!numAddressesWhitelisted < maxWhitelistedAddresses, "Max limit reached");
+
     }
 }
