@@ -21,7 +21,9 @@ contract Whitelist {
         //msg.sender is the address of the user who called this function
 
         require(!whitelistedAddresses[msg.sender], "Sender already in the whitelist");
-        require(!numAddressesWhitelisted < maxWhitelistedAddresses, "Max limit reached");
+        require(numAddressesWhitelisted < maxWhitelistedAddresses, "Max limit reached");
+        whitelistedAddresses[msg.sender] = true;
+        numAddressesWhitelisted += 1;
 
     }
 }
