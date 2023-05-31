@@ -1,10 +1,11 @@
-import Image from 'next/image'
-import styles from './page.module.css'
-import Web3Modal from "web3modal";
-import { providers, Contract } from "ethers";
-import { useState } from 'react'
+import Image from 'next/image';
+import styles from './page.module.css';
+import { useClient } from 'next/client';
+import { useState } from 'react';
+
 
 export default function Home() {
+  useClient();
 
   const [numOfWhitelisted, setnumOfwhitelisted] = useState(0);
   return (
