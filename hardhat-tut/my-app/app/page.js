@@ -1,13 +1,40 @@
 import Image from 'next/image';
 import styles from './page.module.css';
-import { useClient } from 'next/client';
-import { useState } from 'react';
-
+import Web3Modal from "web3modal";
+import { providers, Contract } from "ethers";
+import React, { useEffect, useState, useRef } from 'react';
+import { walletconnect } from 'web3modal/dist/providers/connectors';
+import ConnectToWalletConnect from 'web3modal/dist/providers/connectors/walletconnect';
 
 export default function Home() {
   useClient();
 
+
+  const [walletConnected, setWalletConnected] = useState(false);
   const [numOfWhitelisted, setnumOfwhitelisted] = useState(0);
+  const web3ModalRef = useRef();
+
+  const connectWallet = async() => {
+    try {
+
+      setWalletConnected(true)
+    } catch(err) {
+      console.error(err)
+    }
+    
+  }
+
+  useEffect(() => {
+    if (!walletConnected) {
+      web3ModalRef.current = new Web3Modal({
+        network: "goerli",
+        providerOptions: {},
+        disabledInjectedProvider: false,
+      });
+      connectWallet();
+    }
+  }, [walletConnected]);
+
   return (
     <div>
       <head>
@@ -23,7 +50,7 @@ export default function Home() {
         </div>
       </div>
       <div>
-        <img className={styles.image} src="./crypto-devs.svg" />
+        <img className={module.image} src="./crypto-devs.svg" />
       </div>
         <footer> className={styles.footer}
           Made by crypto Devs
