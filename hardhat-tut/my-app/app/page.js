@@ -6,9 +6,10 @@ import React, { useEffect, useState, useRef } from 'react';
 import { walletconnect } from 'web3modal/dist/providers/connectors';
 import ConnectToWalletConnect from 'web3modal/dist/providers/connectors/walletconnect';
 
-export default function Home() {
-  useClient();
 
+export default function Home() {
+
+  useClient();
 
   const [walletConnected, setWalletConnected] = useState(false);
   const [numOfWhitelisted, setnumOfwhitelisted] = useState(0);
