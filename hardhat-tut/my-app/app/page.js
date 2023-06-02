@@ -8,11 +8,8 @@ import ConnectToWalletConnect from 'web3modal/dist/providers/connectors/walletco
 
 
 export default function Home() {
-
-  useClient();
-
   const [walletConnected, setWalletConnected] = useState(false);
-  const [numOfWhitelisted, setnumOfwhitelisted] = useState(0);
+  const [numOfWhitelisted, setNumOfwhitelisted] = useState(0);
   const web3ModalRef = useRef();
 
   const connectWallet = async() => {
