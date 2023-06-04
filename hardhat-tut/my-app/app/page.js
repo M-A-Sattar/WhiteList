@@ -1,10 +1,11 @@
+'use client';
+
 import Image from 'next/image';
 import styles from './page.module.css';
 import Web3Modal from "web3modal";
 import { providers, Contract } from "ethers";
 import React, { useEffect, useState, useRef } from 'react';
-import { walletconnect } from 'web3modal/dist/providers/connectors';
-import ConnectToWalletConnect from 'web3modal/dist/providers/connectors/walletconnect';
+
 
 
 export default function Home() {
@@ -12,15 +13,37 @@ export default function Home() {
   const [numOfWhitelisted, setNumOfwhitelisted] = useState(0);
   const web3ModalRef = useRef();
 
-  const connectWallet = async() => {
-    try {
+  const getProviderOrSigner = async (needSigner = false) => {
+    try{
+      const provider = await web3ModalRef.current.connect();
+      const web3Provider = new providers.Web3Provider(provider);
 
-      setWalletConnected(true)
+      const {chainId} = await web3Provider.getNetwork();
+      if(chainId !== 5) {
+        window.alert("change the network to Goerli");
+        throw new Error("change the network to Goerli")
+      }
+      if (needSigner) {
+        const signer = web3Provider.getSigner();
+        return signer;
+      }
+
+      return web3Provider;
     } catch(err) {
-      console.error(err)
+      console.error(err);
     }
-    
-  }
+  };
+
+  const connectWallet = async () => {
+    try {
+      await getProviderOrSigner();
+      setWalletConnected(true);
+      checkIfAddressIsWhitelisted();
+      getNumberOfWhitelisted();           
+    } catch(err) {
+      console.error(err);
+    }    
+  };
 
   useEffect(() => {
     if (!walletConnected) {
