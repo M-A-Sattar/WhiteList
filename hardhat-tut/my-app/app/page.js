@@ -5,6 +5,7 @@ import styles from './page.module.css';
 import Web3Modal from "web3modal";
 import { providers, Contract } from "ethers";
 import React, { useEffect, useState, useRef } from 'react';
+import { WHITELIST_CONTRACT_ADDRESS } from './constants';
 
 
 
@@ -34,6 +35,25 @@ export default function Home() {
     }
   };
 
+  const checkIfAddressIsWhitelisted = async () => {
+    try {
+      const signer = getProviderOrSigner(true);
+      const whitelistContract = new Contract(
+        WHITELIST_CONTRACT_ADDRESS,
+        abi,
+        signer
+      );
+      const address = await signer.getAddress();
+      const _joinedWhitelist = await whitelistContract.whitelistedAddresses(
+        address
+      );
+      setJoinedWhitelist(_joinedWhitelist);
+
+    } catch(err) {
+      console.error(err)
+    }
+  };
+  
   const connectWallet = async () => {
     try {
       await getProviderOrSigner();
