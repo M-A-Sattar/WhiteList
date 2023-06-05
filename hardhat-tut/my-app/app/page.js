@@ -12,6 +12,7 @@ import { WHITELIST_CONTRACT_ADDRESS } from './constants';
 export default function Home() {
   const [walletConnected, setWalletConnected] = useState(false);
   const [numOfWhitelisted, setNumOfwhitelisted] = useState(0);
+  const [joinedWhitelist, setJoinedWhitelist] = useState(false);
   const web3ModalRef = useRef();
 
   const getProviderOrSigner = async (needSigner = false) => {
@@ -53,6 +54,22 @@ export default function Home() {
       console.error(err)
     }
   };
+
+  const getNumberOfWhitelisted =async () => {
+    try {
+      const provider = await getProviderOrSigner();
+      const whitelistContract = new Contract(
+        WHITELIST_CONTRACT_ADDRESS,
+        abi,
+        provider
+      );
+      const _numberOfWhitelisted = await whitelistContract.numAddressesWhitelisted()
+      setNumOfwhitelisted(_numOfWhitelisted);
+    } catch(err) {
+      console.error(err)
+    }
+  };
+  
   
   const connectWallet = async () => {
     try {
