@@ -13,6 +13,7 @@ export default function Home() {
   const [walletConnected, setWalletConnected] = useState(false);
   const [numOfWhitelisted, setNumOfwhitelisted] = useState(0);
   const [joinedWhitelist, setJoinedWhitelist] = useState(false);
+  const [loading, setLoading] = useState(false);
   const web3ModalRef = useRef();
 
   const getProviderOrSigner = async (needSigner = false) => {
@@ -31,6 +32,27 @@ export default function Home() {
       }
 
       return web3Provider;
+    } catch(err) {
+      console.error(err);
+    }
+  };
+
+  
+
+  const addAddressToWhitelist = async () => {
+    try {
+      const signer = await getProviderOrSigner(true);
+      const whitelistContract = new Contract(
+        WHITELIST_CONTRACT_ADDRESS,
+        abi,
+        signer
+      );
+      const tx = await whitelistContract.addAddressToWhitelist()
+      setLoading(true)
+      await tx.wait();
+      setLoading(false);
+      await getNumberOfWhitelisted();
+      setJoinedWhitelist(true);
     } catch(err) {
       console.error(err);
     }
@@ -63,13 +85,36 @@ export default function Home() {
         abi,
         provider
       );
-      const _numberOfWhitelisted = await whitelistContract.numAddressesWhitelisted()
+      const _numOfWhitelisted = await whitelistContract.numAddressesWhitelisted();
       setNumOfwhitelisted(_numOfWhitelisted);
     } catch(err) {
       console.error(err)
     }
   };
+
+  const renderButton = () => {
+    if (walletConnected) {
+      if (joinedWhitelist) {
+        return (
+          <div className={styles.description}>
+            Thanks for joining the Whitelist!
+          </div>
+        );
+      } else if (loading) {
+      return <button className={styles.button}>Loading....</button>;
+      } else {
+        return (
+          <button onClick={addAddressToWhitelist} className={styles.button}> Join the Whitelist</button>
+        );
+      }
+    } else {
+      <button onClick={connectWallet} className={styles.button}>
+        Connect your wallet
+      </button>;
+    }
+  };
   
+
   
   const connectWallet = async () => {
     try {
@@ -106,6 +151,7 @@ export default function Home() {
         <div className={styles.description}>
           {numOfWhitelisted} have already joined the Whitelist
         </div>
+        {renderButton()}
       </div>
       <div>
         <img className={module.image} src="./crypto-devs.svg" />
