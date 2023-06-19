@@ -10,7 +10,7 @@ import { abi, WHITELIST_CONTRACT_ADDRESS } from "./constants";
 
 export default function Home() {
   const [walletConnected, setWalletConnected] = useState(false);
-  const [numOfWhitelisted, setNumOfwhitelisted] = useState(0);
+  const [numberOfWhitelisted, setNumberOfWhitelisted] = useState(0);
   const [joinedWhitelist, setJoinedWhitelist] = useState(false);
   const [loading, setLoading] = useState(false);
   const web3ModalRef = useRef();
@@ -81,9 +81,9 @@ export default function Home() {
         abi,
         provider
       );
-      const _numOfWhitelisted =
+      const _numberOfWhitelisted =
         await whitelistContract.numAddressesWhitelisted();
-      setNumOfwhitelisted(_numOfWhitelisted);
+      setNumberOfWhitelisted(_numberOfWhitelisted);
     } catch (err) {
       console.error(err);
     }
@@ -144,14 +144,13 @@ export default function Home() {
       <div className={styles.main}>
         <h1 className={styles.title}>Welcome to Crypto Devs!</h1>
         <div className={styles.description}>
-          {numOfWhitelisted} have already joined the Whitelist
+          {numberOfWhitelisted} have already joined the Whitelist
         </div>
         {renderButton()}
         <div>
           <img className={module.image} alt="couldn't load" src="./crypto-devs.svg" />
         </div>
       </div>
-
       <footer className={styles.footer}>
         Made by crypto Devs
       </footer>     
