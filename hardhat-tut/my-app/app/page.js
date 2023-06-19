@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import Head from "next/head";
 import styles from "./page.module.css";
 import Web3Modal from "web3modal";
 import { providers, Contract } from "ethers";
 import React, { useEffect, useState, useRef } from "react";
-import { WHITELIST_CONTRACT_ADDRESS } from "./constants";
+import { abi, WHITELIST_CONTRACT_ADDRESS } from "./constants";
 
 export default function Home() {
   const [walletConnected, setWalletConnected] = useState(false);
@@ -100,7 +101,7 @@ export default function Home() {
         return <button className={styles.button}>Loading....</button>;
       } else {
         return (
-          <button onClick={addAddressToWhitelist} className={styles.button}>            
+          <button onClick={addAddressToWhitelist} className={styles.button}>
             Join the Whitelist
           </button>
         );
@@ -136,10 +137,10 @@ export default function Home() {
 
   return (
     <div>
-      <head>
+      <Head>
         <title> Whitelist dApp </title>
         <meta name="description" content="Whitelist-Dapp" />
-      </head>
+      </Head>
       <div className={styles.main}>
         <h1 className={styles.title}>Welcome to Crypto Devs!</h1>
         <div className={styles.description}>
@@ -147,13 +148,13 @@ export default function Home() {
         </div>
         {renderButton()}
         <div>
-          <img className={module.image} src="./crypto-devs.svg" />
+          <img className={module.image} alt="couldn't load" src="./crypto-devs.svg" />
         </div>
       </div>
-      
+
       <footer className={styles.footer}>
-         Made by crypto Devs
-      </footer>
+        Made by crypto Devs
+      </footer>     
     </div>
   );
 }
