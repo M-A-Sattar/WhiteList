@@ -1,3 +1,5 @@
+'use client'
+
 export const WHITELIST_CONTRACT_ADDRESS="0xcB8fACaDE32E9780c0369bF11D5dd4c66489E836";
 
 export const abi = [
